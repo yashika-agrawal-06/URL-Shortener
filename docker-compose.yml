@@ -11,13 +11,13 @@ services:
   app:
     image: vaibhavakumarshrivastav/url-shortener:latest
     environment:
-      - NODE_ENV=production
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - BASE_URL=http://localhost   # short links will start with this
+      - NODE_ENV=${NODE_ENV:-production}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - BASE_URL=${BASE_URL:-http://localhost}
     depends_on:
       redis:
-        condition: service_healthy  # waits until Redis answers ping
+        condition: service_healthy
     restart: unless-stopped
     # no ports: nginx is the entry point
 
@@ -30,7 +30,8 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./public:/usr/share/nginx/html:ro
     depends_on:
-      - app
+      app:
+        condition: service_healthy
     restart: unless-stopped
 
 volumes:
