@@ -15,13 +15,13 @@ app.get('/health', (req, res) => {
 
 app.get('/ready', async (req, res) => {
   try {
+    if (!client.isReady) throw new Error('redis not ready');
     await client.ping();
     res.status(200).json({ status: 'ready' });
-  } catch (err) {
+  } catch {
     res.status(503).json({ status: 'unavailable' });
   }
 });
-
 // app.use(express.static(path.resolve('public')));
 app.use(limiter);
 app.use('/api', urlRoutes);
