@@ -1,5 +1,5 @@
 # Use a current LTS Node.js image (Express 5 and redis v5 need Node 18+)
-FROM node:20-alpine
+FROM node:26-alpine
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
